@@ -4,12 +4,13 @@ import com.intern_intelligence.movie.dto.MovieRequest;
 import com.intern_intelligence.movie.model.Movie;
 import com.intern_intelligence.movie.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/movie")
+@RequestMapping("/api/v1/movie")
 @RequiredArgsConstructor
 public class MovieController {
 
@@ -21,17 +22,29 @@ public class MovieController {
     }
 
     @PostMapping
-    public void addMovie (@RequestBody MovieRequest movieRequest) {
+    public void addMovie(@RequestBody MovieRequest movieRequest) {
         service.add(movieRequest);
     }
 
     @PutMapping
-    public void updateMovie (@RequestParam Long id, @RequestBody MovieRequest movieRequest) {
+    public void updateMovie(@RequestParam Long id, @RequestBody MovieRequest movieRequest) {
         service.update(id, movieRequest);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteMovie (@PathVariable Long id) {
+    public void deleteMovie(@PathVariable Long id) {
         service.delete(id);
+    }
+
+    @PostMapping("/{movieId}/genres")
+    public ResponseEntity<Void> addGenreToMovie(@PathVariable Long movieId, @RequestParam Long genreId) {
+        service.addGenre(movieId, genreId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{movieId}/genres")
+    public ResponseEntity<Void> removeGenreFromMovie(@PathVariable Long movieId, @RequestParam Long genreId) {
+        service.deleteGenre(movieId, genreId);
+        return ResponseEntity.ok().build();
     }
 }

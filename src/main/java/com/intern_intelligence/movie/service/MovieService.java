@@ -14,4 +14,8 @@ public interface MovieService {
     Movie update(Long id, MovieRequest movieRequest);
 
     void delete(Long id);
+
+    void deleteGenre(Long movieId, Long genreId);
+
+    void addGenre(Long movieId, Long genreId);
 }
